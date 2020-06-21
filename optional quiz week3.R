@@ -1,0 +1,25 @@
+install.packages("devtools")
+devtools::install_github("jhudsl/collegeIncome")
+library(collegeIncome)
+data(college)
+
+devtools::install_github("jhudsl/matahari")
+library(matahari)
+
+dance_start(value = FALSE, contents = FALSE)
+str(college)
+head(college)
+names(college)
+library(ggplot2)
+library(car)
+college$major_category2 <- as.factor(college$major_category)
+g <- ggplot(college, aes(x= major_category2, y = median))+geom_boxplot()+guides(x = guide_axis(angle = 90))
+g
+g2 <- ggplot(college, aes(median))+geom_histogram()
+g2
+fit <- lm(median~., data = college)
+fit2 <- lm(median~factor(major_category), data = college)
+summary(fit2)
+fit3 <- lm(rank~factor(major_category), data = college)
+summary(fit3)
+dance_save("~/Desktop/college_major_analysis.rds")
